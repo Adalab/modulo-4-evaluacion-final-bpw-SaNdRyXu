@@ -1,0 +1,40 @@
+# Dependencias
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos del entorno
+.env
+.env.*
+
+# Build
+dist/
+build/
+
+# Directorios del sistema
+.DS_Store
+Thumbs.db
+
+# Directorios de IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Coverage de test
+coverage/
+
+# Archivos temporales
+*.tmp
+*.swp
+
+# Otros
+*.tgz
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
