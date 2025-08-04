@@ -89,30 +89,20 @@ server.get('/frases/capitulo/:capitulo_id', async (req, res) => {
 
 
 
-server.get('/personaje', async (req, res) => {
-    const { nombre, apellido } = req.query;
-
-    if (!nombre || !apellido) {
-        return res.status(400).json({ error: 'Faltan parámetros de búsqueda' });
-    }
-
+server.get('/personajes', async (req, res) => {
     try {
         const conn = await getConnection();
-        const [results] = await conn.query('SELECT f.texto AS frase, p.nombre AS nombre_personaje, p.apellido AS apellido_personaje, c.titulo AS titulo_capitulo FROM frases f LEFT JOIN personajes p ON f.personaje_id = p.id LEFT JOIN personajes_capitulos pc ON p.id = pc.personaje_id LEFT JOIN capitulos c ON pc.capitulo_id = c.id WHERE p.nombre = ? AND p.apellido = ?', [nombre, apellido]);
+        const [results] = await conn.query('SELECT p.id AS id_personaje, p.nombre AS nombre_personaje, p.apellido AS apellido_personaje, p.ocupacion AS ocupacion, p.descripcion AS descripcion FROM personajes p LEFT JOIN personajes_capitulos pc ON p.id = pc.capitulo_id LEFT JOIN capitulos c ON pc.capitulo_id = c.id');
         await conn.end();
         if (results.length === 0) {
-            return res.status(404).json({ error: 'No se encontraron frases para este personaje' });
+            return res.status(404).json({ error: 'No se encontraron personajes' });
         }
-        res.status(200).json(result);
-
+        res.status(200).json(results);
     } catch (error) {
-        res.status(500).json({ error: error });
+        
+        return res.status(500).json({ error: 'Error al obtener los personajes' });
     }
 });
-
-
-
-
 
 server.get('/capitulos', async (req, res) => {
     try {
