@@ -14,6 +14,7 @@ server.listen(port, () => {
     });
 
 // Conexión a bbdd
+
 const getConnection = async () => {
     return await mysql.createConnection({
         host: process.env.DB_HOST,
@@ -24,24 +25,28 @@ const getConnection = async () => {
     });
 };
 
-
 server.get('/frases', async (req, res) => {
     try {
         const conn = await getConnection();
         const [results] = await conn.query('SELECT f.id, f.texto AS frase, p.nombre AS nombre_personaje, p.apellido AS apellido_personaje, c.titulo AS titulo_capitulo FROM frases f LEFT JOIN personajes p ON f.personaje_id = p.id LEFT JOIN personajes_capitulos pc ON p.id = pc.personaje_id LEFT JOIN capitulos c ON pc.capitulo_id = c.id');
-
         await conn.end();
-        res.json(results);
-        } 
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron frases' });
+        }
+        res.status(200).json(results[0]);
+
+    } 
     catch (error) {
-        console.error('Error al obtener las frases:', error);
-}});
+        
+        res.status(500).json({ error: error });
+    }
+});
 
 server.get('/frases/:id', async (req, res) => {
     const id = req.params.id;
     try{
         const conn = await getConnection();
-         const [results] = await conn.query('SELECT f.id, f.texto AS frase, p.nombre AS nombre_personaje, p.apellido AS apellido_personaje, c.titulo AS titulo_capitulo FROM frases f LEFT JOIN personajes p ON f.personaje_id = p.id LEFT JOIN personajes_capitulos pc ON p.id = pc.personaje_id LEFT JOIN capitulos c ON pc.capitulo_id = c.id WHERE f.id = ?', [id]);
+        const [results] = await conn.query('SELECT f.id, f.texto AS frase, p.nombre AS nombre_personaje, p.apellido AS apellido_personaje, c.titulo AS titulo_capitulo FROM frases f LEFT JOIN personajes p ON f.personaje_id = p.id LEFT JOIN personajes_capitulos pc ON p.id = pc.personaje_id LEFT JOIN capitulos c ON pc.capitulo_id = c.id WHERE f.id = ?', [id]);
         await conn.end();
         if (results.length === 0){
             return res.status(404).json({error: 'Frase no encontrada'});
@@ -100,7 +105,7 @@ server.get('/personajes', async (req, res) => {
         res.status(200).json(results);
     } catch (error) {
         
-        return res.status(500).json({ error: 'Error al obtener los personajes' });
+        return res.status(500).json({ error: error });
     }
 });
 
@@ -115,8 +120,8 @@ server.get('/capitulos', async (req, res) => {
         res.status(200).json(results);
     }
     catch (error) {
-        console.error('Error al obtener los capítulos:', error);
-        return res.status(500).json({ error: 'Error al obtener los capítulos' });
+        
+        return res.status(500).json({ error: error });
     }
 });
 
@@ -139,7 +144,7 @@ server.put('/frases/:id', async (req, res) => {
 
     }
     catch (error) {
-        res.status(500).json({error: 'Error al actualizar la frase'});
+        res.status(500).json({error: error});
     }
 
 });
@@ -186,7 +191,7 @@ server.post('/frases', async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({ error: 'Hubo un error al insertar la frase' });
+    res.status(500).json({ error: error });
   }
 });
 
@@ -210,7 +215,7 @@ server.delete('/frases/:id', async (req, res) => {
 
     }
     catch (error) {
-        res.status(500).json({error: 'Error al actualizar la frase'});
+        res.status(500).json({error: error});
     }
 
 });

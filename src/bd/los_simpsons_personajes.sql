@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: los_simpsons
+-- Host: lossimpsons-sandryxu-f85b.e.aivencloud.com    Database: los_simpsons
 -- ------------------------------------------------------
--- Server version	8.0.42
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,14 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
+SET @@SESSION.SQL_LOG_BIN= 0;
+
+--
+-- GTID state at the beginning of the backup 
+--
+
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ 'fbed91d6-7147-11f0-b04c-862ccfb01c45:1-69';
 
 --
 -- Table structure for table `personajes`
@@ -41,6 +49,7 @@ LOCK TABLES `personajes` WRITE;
 INSERT INTO `personajes` VALUES (1,'Homer','Simpson','Inspector de seguridad nuclear','Padre de familia, amante de las rosquillas y la siesta'),(2,'Marge','Simpson','Ama de casa','Paciente y sensata, mantiene unida a la familia'),(3,'Bart','Simpson','Estudiante','Travieso y rebelde, famoso por su patineta'),(4,'Lisa','Simpson','Estudiante','Inteligente, activista y amante del jazz'),(5,'Mr.','Burns','Dueño de la planta nuclear','Anciano millonario, símbolo de la avaricia'),(6,'Milhouse','Van Houten','Estudiante','Mejor amigo de Bart, ingenuo y sensible');
 /*!40000 ALTER TABLE `personajes` ENABLE KEYS */;
 UNLOCK TABLES;
+SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -51,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-31 21:47:48
+-- Dump completed on 2025-08-04 18:32:00
